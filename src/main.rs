@@ -3,16 +3,16 @@ use bitvec::prelude::*; //import bitvec lib
 fn main() {
 	let args: Vec<String> = std::env::args().collect();
 	match &*args[0].to_owned() {
-		"-p" => {
+		"-p" | "--path" => {
 			let file: Vec<u8> = std::fs::read(&args[1]).unwrap();
 			let bits: BitVec<u8> = BitVec::<u8, Lsb0>::from_slice(&file[..]); //incase we need to add spliting due to too big variables
 			let (charvalues, padding) = sextet_split(bits);
 		},
-		"-h" => {
-			println!("-p (path to file) \n or string to encode");
+		"-h" | "--help" => {
+			println!("-p | --path (path to file) \n or string to encode");
 		},
 		_ => {
-			panic!(); //until I come up with something better
+			panic!(); //until I come up with something better (string to encode)
 		}
 	}
 
