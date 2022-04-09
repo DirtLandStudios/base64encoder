@@ -11,7 +11,7 @@ fn main() {
 		},
 		"-s" | "--string" => {
 			//let bits: BitVec<u8> = BitVec::<u8, Lsb0>::from_slice(&args[2].as_bytes());
-			encoder::encode(args[2].as_bytes().to_vec())
+			encoder::encode(args[2].as_bytes().to_vec());
 		},
 		"-h" | "--help" => {
 			println!("-p | --path (path to file) \n-s | --string (string to encode)");

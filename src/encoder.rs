@@ -1,4 +1,5 @@
 use bitvec::prelude::*; //import bitvec lib
+//use serde::{Serialize, Deserialize};
 
 pub fn encode(input: Vec<u8>) {
 	let bits: BitVec<u8> = BitVec::<u8, Lsb0>::from_slice(&input);
@@ -28,9 +29,10 @@ fn sextet_split(mut bits: BitVec<u8>) -> (Vec<u8>, usize) {
 	return (bits_slice, padding);
 }
 
+type Language = String;
 fn value_to_chars(charvalues: Vec<u8>) -> String {
-	let language: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".to_owned();
-	let dictionary: Vec<char> = language[..].chars().collect();
+	let languages: Language = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".to_owned();
+	let dictionary: Vec<char> = languages[..].chars().collect();
 	assert_eq!(dictionary.len(), 64);
 	let mut encode: Vec<char> = Vec::new();
 	for i in charvalues {
@@ -38,3 +40,9 @@ fn value_to_chars(charvalues: Vec<u8>) -> String {
 	}
 	return encode.iter().cloned().collect::<String>();
 }
+
+/*
+language: base64
+[Languages]
+base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+*/
