@@ -1,6 +1,35 @@
 mod encoder;
+use clap::Parser;
+
+
+#[derive(Parser)]
+#[clap(author, version, about, long_about = None)]
+struct Cli {
+    #[clap(short, long)]
+    path: Option<String>,
+	string: Option<String>,
+	language: Option<String>
+}
 
 fn main() {
+	let cli = Cli::parse();
+	let mut input: Vec<u8> = Vec::new();
+	let mut lang_file: String = String::from("");
+
+	if let Some(path) = cli.path.as_deref() {
+		input = std::fs::read(path).unwrap();
+	}
+	else if let Some(string) = cli.string.as_deref() {
+		input = string.as_bytes().to_vec();
+	}
+	if let Some(language) = cli.language.as_deref() {
+		lang_file = language.to_string();
+	}
+	encoder::encode(input, lang_file);
+}
+
+
+/* fn main() {
 	let mut args: Vec<String> = std::env::args().collect();
 	args.resize(3, "".to_string());
 	match &*args[1].to_owned() {
@@ -26,6 +55,6 @@ fn main() {
 		}
 	}
 
-}
+} */
 
 

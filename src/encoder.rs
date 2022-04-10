@@ -1,16 +1,11 @@
-use std::io::{stdin, Read};
+//use std::io::{stdin, Read};
 use bitvec::prelude::*;
-
-pub fn encode(mut s: Vec<u8>) {
+//base64: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+pub fn encode(input: Vec<u8>, lang: String) {
     //stdin().read_to_end(&mut s).unwrap();
-    let a: BitVec<u8, Msb0> = BitVec::<u8, Msb0>::from_vec(s);
-    start(a);
-}
-
-/// Encode bits and add padding.
-fn start(bits: BitVec<u8, Msb0>) {
+    let bits: BitVec<u8, Msb0> = BitVec::<u8, Msb0>::from_vec(input);
     let charvalues = sextet_split(bits);
-    let encoded = value_to_chars(charvalues);
+    let encoded = value_to_chars(charvalues, get_language(lang));
     println!("{}", encoded);
 }
 
@@ -36,12 +31,11 @@ fn sextet_split(mut bits: BitVec<u8, Msb0>) -> Vec<u8> {
 }
 
 /// Takes a list of 6-bit values to a base-64 string.
-fn value_to_chars(charvalues: Vec<u8>) -> String {
+fn value_to_chars(charvalues: Vec<u8>, lang: String) -> String {
     // Check how much output padding is needed.
     let padding: usize = (4 - charvalues.len() % 4) % 4;
 
-    let language: String =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".to_owned();
+    let language: String = lang.to_owned();
     let dictionary: Vec<char> = language.chars().collect();
     assert_eq!(dictionary.len(), 64);
     let mut encode: String = String::new();
@@ -56,4 +50,16 @@ fn value_to_chars(charvalues: Vec<u8>) -> String {
     }
 
     encode
+}
+
+fn get_language(file: String) -> String {
+    match std::fs::read_to_string(file) {
+        Err(_) => {
+            let base64: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".to_string();
+            return base64;
+        },
+        Ok(lang) => {
+            return lang;
+        }
+    }
 }
