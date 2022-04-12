@@ -43,11 +43,13 @@ fn sextet_resplit(bits: BitVec<u8, Msb0>, padding: usize) -> Vec<u8> {
     let nbits: usize = bits.len();
     //get the important 6 of each byte, and shove into vec
     for x in (0..nbits).step_by(8) {
-        let u: &BitSlice<u8, Msb0> = &bits[x..x + 6];
+        let u: &BitSlice<u8, Msb0> = &bits[(x + 2)..(x + 8)];
         bits_slice.extend_from_bitslice(u);
     }
     // remove padding
-    bits_slice.drain((bits.len() - padding)..bits.len());
+    if padding > 0 {
+        bits_slice.drain((bits_slice.len() - padding)..bits_slice.len());
+    }
     assert_eq!(bits_slice.len() % 8, 0);
     
     return bits_slice.into_vec();

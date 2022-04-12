@@ -1,7 +1,7 @@
 mod encoder;
 use clap::Parser;
 use std::fs::{read, write};
-use std::str;
+//use std::str;
 
 #[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
@@ -17,7 +17,8 @@ struct Cli {
 }
 
 fn main() {
-	let cli = Cli::parse();
+	test();
+/* 	let cli = Cli::parse();
 	let mut input: Vec<u8> = Vec::new();
 	let mut lang_file: String = String::from("");
 	
@@ -44,11 +45,30 @@ fn main() {
 	else {
 		let encode = encoder::encode(input, lang_file);
 		println!("{}", encode);
-	}
-
+	} */
 }
 
-
+fn test() {
+	let input = read("./a").unwrap();
+	match write("./in.txt", &input) {
+		Ok(()) => {
+			println!("DONE")
+		},
+		Err(..) => {
+			println!("decode err")
+		}
+	}
+	let encoded = encoder::encode(input, "".to_string());
+	let decoded = encoder::decode(encoded, "".to_string());
+	match write("./out.txt", decoded) {
+		Ok(()) => {
+			println!("DONE")
+		},
+		Err(..) => {
+			println!("decode err")
+		}
+	}
+}
 /* fn main() {
 	let mut args: Vec<String> = std::env::args().collect();
 	args.resize(3, "".to_string());
