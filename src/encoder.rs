@@ -77,18 +77,20 @@ fn get_language(file: String) -> Vec<char> {
     let dictionary: Vec<char>;
     match std::fs::read_to_string(file) {
         Err(_) => {
-            let base64: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-                .to_string()
+            let base64: String = 
+                String::from("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
                 .to_owned();
-            dictionary = base64
-                            .chars()
-                            .collect();
+            dictionary = 
+                base64
+                    .chars()
+                    .collect();
         },
         Ok(lang) => {
-            dictionary = lang
-                            .to_owned()
-                            .chars()
-                            .collect();
+            dictionary = 
+                lang
+                    .to_owned()
+                    .chars()
+                    .collect();
             assert_eq!(dictionary.len(), 64);
         }
     }
