@@ -51,6 +51,14 @@ fn main() {
 	else {
 		let encode = encoder::encode(input, lang_file);
 		println!("{}", encode);
+		match write(out_file, encode) {
+			Ok(()) => {
+				println!("DONE")
+			},
+			Err(..) => {
+				println!("encode err")
+			}
+		}
 	}
 }
 /* 
