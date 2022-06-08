@@ -6,14 +6,19 @@ use std::fs::{read, write};
 #[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
 struct Cli {
+	///flag to decode instead of encode
 	#[clap(short, long)]
 	decode: bool,
+	///path to file to encode or decode
     #[clap(short, long)]
     path: Option<String>,
+	///path to file to print output to
 	#[clap(short, long)]
     outfile: Option<String>,
+	///to use string instead of path
 	#[clap(short, long)]
 	string: Option<String>,
+	///to not use default base 64 conversion table
 	#[clap(short, long)]
 	language: Option<String>
 }
